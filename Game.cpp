@@ -17,7 +17,7 @@ void Game::status(bool& over, bool& hasWinner, Side& winner) const
 
 bool Game::move()
 {
-	return;
+	return false;
 }
 
 void Game::play()
