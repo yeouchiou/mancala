@@ -1,5 +1,6 @@
 ﻿#ifndef BOARD_H
 #define BOARD_H
+#include "Side.h"
 
 class Board{
 public:

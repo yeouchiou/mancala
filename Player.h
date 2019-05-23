@@ -1,6 +1,9 @@
 ﻿#ifndef PLAYER_H
 #define PLAYER_H
 #include <string>
+#include "Side.h"
+
+class Board;
 class Player
 {
 public:

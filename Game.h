@@ -1,5 +1,8 @@
 ﻿#ifndef GAME_H
 #define GAME_H
+#include "Side.h"
+class Board;
+class Player;
 class Game 
 {
 public:
