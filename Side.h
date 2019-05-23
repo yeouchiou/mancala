@@ -1,5 +1,5 @@
 #ifndef SIDE_H
-#define SID_H
+#define SIDE_H
 
 enum Side { NORTH, SOUTH };
 
