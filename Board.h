@@ -1,6 +1,7 @@
 ﻿#ifndef BOARD_H
 #define BOARD_H
 #include "Side.h"
+#include <vector>
 
 class Board{
 public:
@@ -37,6 +38,16 @@ public:
 	// changing anything.Otherwise, it will return true after setting the number of beans 
 	// in the indicated hole or pot to the value of the third parameter. 
 	// (This may change what beansInPlay and totalBeans return if they are called later.) 
+private:
+	std::vector<int> m_board;
+	// first nHoles is north's holes, then south's pot. then the next nHoles are south's holes, then south's pot.
+	int m_nHoles;
+
+	int getSouthPot();
+	int getNorthPot();
+	int getSoutHole(int n);
+	int getNorthHole(int n);
+
 };
 
 #endif
