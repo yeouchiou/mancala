@@ -1,75 +1,137 @@
 #include "Board.h"
 
-Board::Board(int nHoles, int nInitialBeansPerHole) : m_nHoles(nHoles)
+Board::Board(int nHoles, int nInitialBeansPerHole) : m_nHoles(nHoles), m_nInitialBeansPerHole(nInitialBeansPerHole)
 {
-	for (int i = 0; i < nHoles; i++)
-	{
-		m_board.push_back(nInitialBeansPerHole);
-	}
+	if (m_nHoles <= 0)
+		m_nHoles = 1;
+	if (m_nInitialBeansPerHole < 0)
+		m_nInitialBeansPerHole = 0;
+	// set up m_board
+
+	// set South's holes
+	for (int i = 0; i < m_nHoles; i++)
+		m_board.push_back(m_nInitialBeansPerHole);
+	// set South's pot
 	m_board.push_back(0);
-	for (int i = 0; i < nHoles; i++)	
-	{
-		m_board.push_back(nInitialBeansPerHole);
-	}	
+	// set North's holes
+	for (int i = 0; i < m_nHoles; i++)		
+		m_board.push_back(m_nInitialBeansPerHole);	
+	// set North's pot
+	m_board.push_back(0);
+
 }
 
-int Board::holes() const
-{
-	return -999;
-}
 
 int Board::beans(Side s, int hole) const
 {
-	return -999;
+	if (isValidHole(hole))
+		return m_board[getHoleIdx(s, hole)];
+	else
+		return -1;
 }
 int Board::beansInPlay(Side s) const
 {
-	return -999;
+	int count = 0;
+	if (s == SOUTH)
+	{
+		for (int i = 0; i < m_nHoles; i++)
+			count += m_board[i];
+	}
+
+	else  // North
+	{
+		for (int i = m_nHoles + 1; i < 2 * m_nHoles + 1; i++)
+			count += m_board[i];
+	}
+	return count;
 }
+
 int Board::totalBeans() const
 {
-	return -999;
+	int count = 0;
+	for (std::vector<int>::const_iterator p = m_board.begin(); p != m_board.end(); p++)
+	{
+		count += *p;
+	}
+	return count;
 }
+
 bool Board::sow(Side s, int hole, Side& endSide, int& endHole)
 {
-	return false;
+	// TODO
+	if (!isValidHole(hole) || hole == POT)
+		return false;
+	else
+	{
+		
+		return true;
+	}
 }
 
 bool Board::moveToPot(Side s, int hole, Side potOwner)
 {
-	return false;
+	if (!isValidHole(hole) || hole == POT)
+		return false;
+	else
+	{
+		m_board[getHoleIdx(potOwner, POT)] += m_board[getHoleIdx(s, hole)];
+		m_board[getHoleIdx(s, hole)] = 0;
+		return true;
+	}
 }
 
 bool Board::setBeans(Side s, int hole, int beans)
 {
-	return false;
+	if (!isValidHole(hole) || beans < 0)
+		return false;
+	else
+	{
+		m_board[getHoleIdx(s, hole)] = beans;
+		return true;
+	}
 }
 
-// Private member functions
 
-int Board::getSouthPot()
+// Privat member functions
+
+bool Board::isValidHole(int hole) const
 {
-	return m_board[m_nHoles];	
+	// invalid hole
+	if (hole > m_nHoles || hole < 0)
+		return false;
+	else
+		return true;
 }
-int Board::getNorthPot()
+
+
+int Board::getHoleIdx(Side s, int hole) const
 {
-	return m_board[2 * m_nHoles + 1];
-}
-int Board::getSoutHole(int n)
-{
-	if (n > 0 && n <= m_nHoles)
+	if (isValidHole(hole))
 	{
-		return m_board[2*m_nHoles + 1 - n];
+		if (hole == POT)
+		{
+			if (s == SOUTH)
+			{
+				return m_nHoles;
+			}
+			else // North
+			{
+				return 2 * m_nHoles + 1;
+			}
+		}
+		else
+		{
+			if (s == SOUTH)
+			{
+				return hole - 1;
+			}
+			else // North
+			{
+				return 2 * m_nHoles + 1 - hole;
+			}
+		}
 	}
 	else
-		return -999;
-}
-int Board::getNorthHole(int n)
-{
-	if (n > 0 && n <= m_nHoles)
-	{
-		return m_board[n - 1];
-	}
-	else
+		// invalid hole
 		return -999;
 }

@@ -12,7 +12,7 @@ public:
 	// Construct a Board with the indicated number of holes per side(not counting the pot)
 	// and initial number of beans per hole.If nHoles is not positive, 
 	// act as if it were 1; if nInitialBeansPerHole is negative, act as if it were 0.
-	int holes() const;
+	int holes() const { return m_nHoles; }
 	//Return the number of holes on a side(not counting the pot).
 	int beans(Side s, int hole) const;
 	//Return the number of beans in the indicated hole or pot, or −1 if the hole number is invalid.
@@ -40,14 +40,14 @@ public:
 	// (This may change what beansInPlay and totalBeans return if they are called later.) 
 private:
 	std::vector<int> m_board;
-	// first nHoles is north's holes, then south's pot. then the next nHoles are south's holes, then south's pot.
+	// First m_nHoles are South's holes. The next value is South's pot. 
+	// Then the next nHoles are North's holes and the last value is North's pot.
 	int m_nHoles;
-
-	int getSouthPot();
-	int getNorthPot();
-	int getSoutHole(int n);
-	int getNorthHole(int n);
-
+	int m_nInitialBeansPerHole;
+	bool isValidHole(int hole) const;
+	// returns true if hole is valid.
+	int getHoleIdx(Side s, int hole) const;
+	// maps public hole numbering to internal representation.
 };
 
 #endif
