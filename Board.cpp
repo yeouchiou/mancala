@@ -1,26 +1,24 @@
 #include "Board.h"
 
-Board::Board(int nHoles, int nInitialBeansPerHole) : m_nHoles(nHoles), m_nInitialBeansPerHole(nInitialBeansPerHole)
+Board::Board(int nHoles, int nInitialBeansPerHole) : m_nHoles(nHoles) 
 {
 	if (m_nHoles <= 0)
 		m_nHoles = 1;
-	if (m_nInitialBeansPerHole < 0)
-		m_nInitialBeansPerHole = 0;
+	if (nInitialBeansPerHole < 0)
+		nInitialBeansPerHole = 0;
 	// set up m_board
 
 	// set South's holes
 	for (int i = 0; i < m_nHoles; i++)
-		m_board.push_back(m_nInitialBeansPerHole);
+		m_board.push_back(nInitialBeansPerHole);
 	// set South's pot
 	m_board.push_back(0);
 	// set North's holes
 	for (int i = 0; i < m_nHoles; i++)		
-		m_board.push_back(m_nInitialBeansPerHole);	
+		m_board.push_back(nInitialBeansPerHole);	
 	// set North's pot
 	m_board.push_back(0);
-
 }
-
 
 int Board::beans(Side s, int hole) const
 {
@@ -58,12 +56,56 @@ int Board::totalBeans() const
 
 bool Board::sow(Side s, int hole, Side& endSide, int& endHole)
 {
-	// TODO
 	if (!isValidHole(hole) || hole == POT)
 		return false;
 	else
 	{
-		
+		int numBeans = beans(s, hole);
+		// if no beans in pot do nothing
+		if (numBeans <= 0)
+		{
+			endSide = s;
+			endHole = hole;
+			return true;
+		}
+		int p = getHoleIdx(s, hole);
+		// clear beans in the hole
+		m_board[p] = 0;
+		// sow
+		while (numBeans > 0)
+		{
+			// move to next hole
+			p++; 
+			// reached end of board
+			if (p == m_board.size()) 
+				p = 0;
+			// Skip opponent's pot
+			if (p == getHoleIdx(opponent(s), POT))
+				p++;
+			m_board[p]++;
+			numBeans--;	
+		}
+		// Figure out final hole in public numbering scheme.
+		if (p == m_nHoles)
+		{
+			endSide = SOUTH;
+			endHole = POT;
+		}
+		else if (0 <= p && p < m_nHoles)
+		{
+			endSide = SOUTH;
+			endHole = p + 1;
+		}
+		else if (p == 2 * m_nHoles + 1)
+		{
+			endSide = NORTH;
+			endHole = POT;
+		}
+		else
+		{
+			endSide = NORTH;
+			endHole = 2 * m_nHoles + 1 - p;
+		}
 		return true;
 	}
 }

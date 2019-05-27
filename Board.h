@@ -43,7 +43,7 @@ private:
 	// First m_nHoles are South's holes. The next value is South's pot. 
 	// Then the next nHoles are North's holes and the last value is North's pot.
 	int m_nHoles;
-	int m_nInitialBeansPerHole;
+	// Number of holes per side (not counting the pot).
 	bool isValidHole(int hole) const;
 	// returns true if hole is valid.
 	int getHoleIdx(Side s, int hole) const;
