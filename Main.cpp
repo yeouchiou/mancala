@@ -28,8 +28,28 @@ void doBoardTests()
 		b.beans(NORTH, 1) == 0 && b.beans(SOUTH, 1) == 2);
 }
 
+void doPlayerTests()
+{
+	HumanPlayer hp("Marge");
+	assert(hp.name() == "Marge"  &&  hp.isInteractive());
+	BadPlayer bp("Homer");
+	assert(bp.name() == "Homer" && !bp.isInteractive());
+	//SmartPlayer sp("Lisa");
+	//assert(sp.name() == "Lisa" && !sp.isInteractive());
+	Board b(3, 2);
+	b.setBeans(SOUTH, 2, 0);
+	cout << "=========" << endl;
+	int n = hp.chooseMove(b, SOUTH);
+	cout << "=========" << endl;
+	assert(n == 1 || n == 3);
+	n = bp.chooseMove(b, SOUTH);
+	assert(n == 1 || n == 3);
+	//n = sp.chooseMove(b, SOUTH);
+	//assert(n == 1 || n == 3);
+}
 int main()
 {
 	doBoardTests();
+	doPlayerTests();
 	cout << "Passed all tests" << endl;
 }

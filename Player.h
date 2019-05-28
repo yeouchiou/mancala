@@ -9,7 +9,7 @@ class Player
 public:
 	Player(std::string name);
 	// Create a Player with the indicated name.
-	std::string name() const;
+	std::string name() const { return m_name; }
 	// Return the name of the player.
 	virtual bool isInteractive() const { return false; }
 	// Return false if the player is a computer player.
@@ -21,26 +21,30 @@ public:
 	// If no move is possible, return −1.
 	virtual ~Player() {}
 	// Since this class is designed as a base class, it should have a virtual destructor.
+private:
+	std::string m_name;
 };
 
 class HumanPlayer : public Player
 {
 public:
+	HumanPlayer(std::string name);
 	virtual bool isInteractive() const { return true; }
 	virtual int chooseMove(const Board& b, Side s) const;
-	~HumanPlayer();
 };
 
 class BadPlayer : public Player
 {
 public:
+	BadPlayer(std::string name);
 	virtual int chooseMove(const Board& b, Side s) const;
-	~BadPlayer();
+
 };
 
 class SmartPlayer : public Player
 {
 public:
+	SmartPlayer(std::string name);
 	virtual int chooseMove(const Board& b, Side s) const;
 	~SmartPlayer();
 
