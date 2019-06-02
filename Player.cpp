@@ -21,7 +21,8 @@ int HumanPlayer::chooseMove(const Board& b, Side s) const
 	{
 		cout << "Select a hole, " << name() << ": ";
 		cin >> choice;
-	} while (choice > b.holes() || choice <= 0); // Make sure not illegal.
+	} while (choice > b.holes() || choice <= 0 || b.beans(s, choice) == 0); 
+	// make sure choice is legal and there are beans in that hole.
 	return choice;
 }
 
