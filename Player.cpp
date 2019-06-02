@@ -51,6 +51,7 @@ SmartPlayer::SmartPlayer(std::string name) : Player(name)
 
 int SmartPlayer::chooseMove(const Board& b, Side s) const
 {
+	// ssssssssssssssssssssssss
 	return -999;
 }
 SmartPlayer::~SmartPlayer()
