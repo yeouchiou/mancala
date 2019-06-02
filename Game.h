@@ -48,6 +48,5 @@ private:
 	Player* m_south;
 	Side m_turn; 
 	Player* currentPlayer(Side s);
-	bool isOver() const;
 };
 #endif

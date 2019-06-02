@@ -114,9 +114,20 @@ int main()
 	//doPlayerTests();
 	//doGameTests();
 	//cout << "Passed all tests" << endl;
-	BadPlayer bp1("Bart");
-	BadPlayer bp2("Homer");
+	HumanPlayer bp1("Marge");
+	HumanPlayer bp2("Homer");
 	Board b(3, 2);
 	Game g(b, &bp1, &bp2);
 	g.play();
-	}
+}
+
+// Non member function implementations
+
+bool isOver(const Board& b)
+{
+	if (b.beansInPlay(NORTH) == 0 || b.beansInPlay(SOUTH) == 0)
+		return true;
+	else
+		return false;
+}
+
