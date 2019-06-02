@@ -1,7 +1,7 @@
 ﻿#ifndef GAME_H
 #define GAME_H
 #include "Side.h"
-class Board;
+#include "Board.h"
 class Player;
 class Game 
 {
@@ -37,7 +37,17 @@ public:
 	// (Note: If when this function is called, South has no beans in play, 
 	// so can't make the first move, sweep any beans on the North side into North's pot and 
 	// act as if the game is thus over.) 
-	int beans(Side s, int hole) const;
-	// Return the number of beans in the indicated hole or pot of the game's board, or −1 if the hole number is invalid. This function exists so that we and you can more easily test your program. 
+	int beans(Side s, int hole) const {return m_board.beans(s, hole); }
+	// Return the number of beans in the indicated hole or pot of the game's board, 
+	// or −1 if the hole number is invalid. This function exists so that we and you
+	// can more easily test your program. 
+
+private:
+	Board m_board;
+	Player* m_north;
+	Player* m_south;
+	Side m_turn; 
+	Player* currentPlayer(Side s);
+	bool isOver() const;
 };
 #endif
