@@ -1,3 +1,5 @@
-# kalah
+# Mancala
 
-Game to play Kalah.
+Game to play Mancala.
+
+Todo: Implement SmartPlayer
