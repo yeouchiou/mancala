@@ -81,7 +81,7 @@ bool Board::sow(Side s, int hole, Side& endSide, int& endHole)
 				p = 0;
 			// Skip opponent's pot
 			if (p == getHoleIdx(opponent(s), POT))
-				p++;
+				p = (p + 1) % m_board.size();
 			m_board[p]++;
 			numBeans--;	
 		}
