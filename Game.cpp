@@ -35,7 +35,7 @@ void Game::display() const
 
 void Game::status(bool& over, bool& hasWinner, Side& winner) const
 {
-	if (isOver())
+	if (isOver(m_board))
 	{
 		over = true;
 		if (beans(NORTH, POT) == beans(SOUTH, POT))
@@ -60,7 +60,7 @@ void Game::status(bool& over, bool& hasWinner, Side& winner) const
 
 bool Game::move()
 {
-	if (isOver())
+	if (isOver(m_board))
 		return false;
 	Side endSide;
 	int endHole;
@@ -69,7 +69,7 @@ bool Game::move()
 	if (!currentPlayer(m_turn)->isInteractive())
 		cout << currentPlayer(m_turn)->name() << " chooses hole " << playHole << endl;
 	m_board.sow(m_turn, playHole, endSide, endHole);
-	if (endSide == m_turn && endHole == POT && !isOver())
+	if (endSide == m_turn && endHole == POT && !isOver(m_board))
 	{
 		// ended up in pot so take another turn
 		display();
@@ -86,7 +86,7 @@ bool Game::move()
 		}
 	}
 	m_turn = opponent(m_turn);
-	if (isOver())
+	if (isOver(m_board))
 	{
 		display();
 		if (m_board.beansInPlay(NORTH) == 0)
@@ -149,13 +149,6 @@ void Game::play()
 
 // Private member functions
 
-bool Game::isOver() const
-{
-	if (m_board.beansInPlay(NORTH) == 0 || m_board.beansInPlay(SOUTH) == 0)
-		return true;
-	else
-		return false;
-}
 
 Player* Game::currentPlayer(Side s)
 {

@@ -8,6 +8,7 @@ using namespace std;
 
 void doBoardTests()
 {
+	
 	Board b(3, 2);
 	assert(b.holes() == 3 && b.totalBeans() == 12 &&
 		b.beans(SOUTH, POT) == 0 && b.beansInPlay(SOUTH) == 6);
@@ -26,6 +27,16 @@ void doBoardTests()
 	b.sow(NORTH, 1, es, eh);
 	assert(es == SOUTH && eh == 1 && b.beans(NORTH, POT) == 1 &&
 		b.beans(NORTH, 1) == 0 && b.beans(SOUTH, 1) == 2);
+	
+	// test board looping
+	/*
+	Board b(4, 0);
+	b.setBeans(NORTH, 4, 1);
+	b.setBeans(SOUTH, 3, 7);
+	Side es;
+	int eh;
+	b.sow(SOUTH, 3, es, eh);
+	*/
 }
 
 void doPlayerTests()
@@ -34,8 +45,8 @@ void doPlayerTests()
 	assert(hp.name() == "Marge"  &&  hp.isInteractive());
 	BadPlayer bp("Homer");
 	assert(bp.name() == "Homer" && !bp.isInteractive());
-	//SmartPlayer sp("Lisa");
-	//assert(sp.name() == "Lisa" && !sp.isInteractive());
+	SmartPlayer sp("Lisa");
+	assert(sp.name() == "Lisa" && !sp.isInteractive());
 	Board b(3, 2);
 	b.setBeans(SOUTH, 2, 0);
 	cout << "=========" << endl;
@@ -44,8 +55,8 @@ void doPlayerTests()
 	assert(n == 1 || n == 3);
 	n = bp.chooseMove(b, SOUTH);
 	assert(n == 1 || n == 3);
-	//n = sp.chooseMove(b, SOUTH);
-	//assert(n == 1 || n == 3);
+	n = sp.chooseMove(b, SOUTH);
+	assert(n == 1 || n == 3);
 }
 
 
@@ -110,13 +121,33 @@ void doGameTests()
 
 int main()
 {
+	
 	//doBoardTests();
 	//doPlayerTests();
 	//doGameTests();
 	//cout << "Passed all tests" << endl;
-	BadPlayer bp1("Bart");
-	BadPlayer bp2("Homer");
-	Board b(3, 2);
+	
+		
+	HumanPlayer bp1("Marge");
+	SmartPlayer bp2("Homer");
+	//HumanPlayer bp2("Homer");
+	Board b(4, 4);
 	Game g(b, &bp1, &bp2);
 	g.play();
-	}
+		
+}
+
+// Non member function implementations
+
+bool isOver(const Board& b)
+{
+	if (b.beansInPlay(NORTH) == 0 || b.beansInPlay(SOUTH) == 0)
+		return true;
+	else
+		return false;
+}
+
+int heuristic(const Board& b)
+{
+	return b.beans(SOUTH, POT) - b.beans(NORTH, POT);
+}
