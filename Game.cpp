@@ -140,8 +140,14 @@ void Game::play()
 			cin.ignore(100000, '\n');
 		}
 	}
-	cout << "The winner is " << currentPlayer(winner)->name() << endl;
-
+	if (hasWinner) 
+	{
+		cout << "The winner is " << currentPlayer(winner)->name() << endl;
+	}
+	else
+	{
+		cout << "There is a tie! "  << endl;
+	}
 
 }
 
