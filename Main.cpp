@@ -45,8 +45,8 @@ void doPlayerTests()
 	assert(hp.name() == "Marge"  &&  hp.isInteractive());
 	BadPlayer bp("Homer");
 	assert(bp.name() == "Homer" && !bp.isInteractive());
-	//SmartPlayer sp("Lisa");
-	//assert(sp.name() == "Lisa" && !sp.isInteractive());
+	SmartPlayer sp("Lisa");
+	assert(sp.name() == "Lisa" && !sp.isInteractive());
 	Board b(3, 2);
 	b.setBeans(SOUTH, 2, 0);
 	cout << "=========" << endl;
@@ -55,8 +55,8 @@ void doPlayerTests()
 	assert(n == 1 || n == 3);
 	n = bp.chooseMove(b, SOUTH);
 	assert(n == 1 || n == 3);
-	//n = sp.chooseMove(b, SOUTH);
-	//assert(n == 1 || n == 3);
+	n = sp.chooseMove(b, SOUTH);
+	assert(n == 1 || n == 3);
 }
 
 
@@ -122,19 +122,19 @@ void doGameTests()
 int main()
 {
 	
-	doBoardTests();
+	//doBoardTests();
 	//doPlayerTests();
 	//doGameTests();
-	cout << "Passed all tests" << endl;
+	//cout << "Passed all tests" << endl;
 	
-	/*	
+		
 	HumanPlayer bp1("Marge");
-	//SmartPlayer bp2("Homer");
-	HumanPlayer bp2("Homer");
+	SmartPlayer bp2("Homer");
+	//HumanPlayer bp2("Homer");
 	Board b(4, 4);
 	Game g(b, &bp1, &bp2);
 	g.play();
-	*/	
+		
 }
 
 // Non member function implementations
