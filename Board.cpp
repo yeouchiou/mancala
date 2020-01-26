@@ -1,5 +1,4 @@
 #include "Board.h"
-
 Board::Board(int nHoles, int nInitialBeansPerHole) : m_nHoles(nHoles) 
 {
 	if (m_nHoles <= 0)
@@ -76,12 +75,12 @@ bool Board::sow(Side s, int hole, Side& endSide, int& endHole)
 		{
 			// move to next hole
 			p++; 
-			// reached end of board
+			// reached end of board	
 			if (p == m_board.size()) 
-				p = 0;
+				p = 0;	
 			// Skip opponent's pot
 			if (p == getHoleIdx(opponent(s), POT))
-				p++;
+				p = (p + 1) % m_board.size();
 			m_board[p]++;
 			numBeans--;	
 		}
@@ -134,7 +133,7 @@ bool Board::setBeans(Side s, int hole, int beans)
 }
 
 
-// Privat member functions
+// Private member functions
 
 bool Board::isValidHole(int hole) const
 {
@@ -174,6 +173,6 @@ int Board::getHoleIdx(Side s, int hole) const
 		}
 	}
 	else
-		// invalid hole
+		// invalid hole	
 		return -999;
 }

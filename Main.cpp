@@ -8,6 +8,7 @@ using namespace std;
 
 void doBoardTests()
 {
+	
 	Board b(3, 2);
 	assert(b.holes() == 3 && b.totalBeans() == 12 &&
 		b.beans(SOUTH, POT) == 0 && b.beansInPlay(SOUTH) == 6);
@@ -26,6 +27,16 @@ void doBoardTests()
 	b.sow(NORTH, 1, es, eh);
 	assert(es == SOUTH && eh == 1 && b.beans(NORTH, POT) == 1 &&
 		b.beans(NORTH, 1) == 0 && b.beans(SOUTH, 1) == 2);
+	
+	// test board looping
+	/*
+	Board b(4, 0);
+	b.setBeans(NORTH, 4, 1);
+	b.setBeans(SOUTH, 3, 7);
+	Side es;
+	int eh;
+	b.sow(SOUTH, 3, es, eh);
+	*/
 }
 
 void doPlayerTests()
@@ -110,15 +121,20 @@ void doGameTests()
 
 int main()
 {
-	//doBoardTests();
+	
+	doBoardTests();
 	//doPlayerTests();
 	//doGameTests();
-	//cout << "Passed all tests" << endl;
+	cout << "Passed all tests" << endl;
+	
+	/*	
 	HumanPlayer bp1("Marge");
+	//SmartPlayer bp2("Homer");
 	HumanPlayer bp2("Homer");
-	Board b(3, 2);
+	Board b(4, 4);
 	Game g(b, &bp1, &bp2);
 	g.play();
+	*/	
 }
 
 // Non member function implementations
@@ -131,3 +147,7 @@ bool isOver(const Board& b)
 		return false;
 }
 
+int heuristic(const Board& b)
+{
+	return b.beans(SOUTH, POT) - b.beans(NORTH, POT);
+}
