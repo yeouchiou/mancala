@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "Side.h"
 #include <iostream>
+#include <limits>
 using namespace std;
 
 // Player implementations
@@ -53,7 +54,8 @@ SmartPlayer::SmartPlayer(std::string name) : Player(name)
 
 int SmartPlayer::chooseMove(const Board& b, Side s) const
 {
-	AlarmClock ac(4900);
+	int totalTime = 4900;
+	AlarmClock ac(totalTime);
 	int bestHole;
 	int value;
 	Board copy(b);
@@ -61,10 +63,12 @@ int SmartPlayer::chooseMove(const Board& b, Side s) const
 		value = -10000;
 	else
 		value = 10000;
-	minimax(copy, s, bestHole, value, ac);
+
+	minimax(copy, s, bestHole, value, ac, 0);
 	// if minimax failed
-	if (bestHole < 0)
+	if (bestHole < 0 || bestHole > b.holes())
 	{
+		//cout << "minimax failed" << endl;
 		for (int i = 1; i <= b.holes(); i++)
 		{
 			if (b.beans(s, i) > 0)
@@ -74,19 +78,21 @@ int SmartPlayer::chooseMove(const Board& b, Side s) const
 	return bestHole;
 }
 
-void SmartPlayer::minimax(Board& b, Side s, int& bestHole, int& value, AlarmClock& ac) const
+void SmartPlayer::minimax(Board& b, Side s, int& bestHole, int& value, const AlarmClock& ac, int depth) const
 {
 	int endHole;
 	int v2;
 	int h2 = -1;
 	Side endSide;
 
-	if (ac.timedOut())
+	// If we reach max depth or time out, return
+	if (depth > MAX_DEPTH || ac.timedOut())
 	{ 
 		bestHole = -1;
 		value = heuristic(b);
 		return;
 	}
+
 
 	if (isOver(b))
 	{
@@ -119,9 +125,15 @@ void SmartPlayer::minimax(Board& b, Side s, int& bestHole, int& value, AlarmCloc
 			value = 0; // Tied
 		return;
 	}
-	
+	int numHolesCanPlay = b.holes();
 	for (int i = 1; i <= b.holes(); i++)
 	{
+		if (b.beans(s, i) == 0)
+			numHolesCanPlay--;
+	}
+	for (int i = 1; i <= b.holes(); i++)
+	{	
+		bool flipped = false;
 		// no beans to sow
 		if (b.beans(s, i) == 0)
 			continue;
@@ -132,6 +144,7 @@ void SmartPlayer::minimax(Board& b, Side s, int& bestHole, int& value, AlarmCloc
 		{
 			// switch opponent to the current side which will be overwritten in subsequent call
 			s = opponent(s);
+			flipped = true;
 		}
 		// capture
 		else if (endSide == s && b.beans(s, endHole) == 1)
@@ -142,8 +155,10 @@ void SmartPlayer::minimax(Board& b, Side s, int& bestHole, int& value, AlarmCloc
 				b.moveToPot(opponent(s), endHole, s);
 			}
 		}
-
-		minimax(b, opponent(s), h2, v2, ac);
+		Board copy(b);
+		minimax(copy, opponent(s), h2, v2, ac, depth + 1);
+		if (flipped)
+			s = opponent(s);
 		if (s == SOUTH)
 		{
 			if (v2 > value)
@@ -160,7 +175,7 @@ void SmartPlayer::minimax(Board& b, Side s, int& bestHole, int& value, AlarmCloc
 				value = v2;
 			}
 		}
-		return;
+		
 	}
 	return;
 }

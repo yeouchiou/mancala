@@ -59,67 +59,85 @@ void doPlayerTests()
 	assert(n == 1 || n == 3);
 }
 
+void doSmartTests()
+{
+
+	//test endgame SmartPlayer
+	BadPlayer bp("Marge");
+	SmartPlayer sp("Lisa");
+	Board b(4, 0);
+	b.setBeans(SOUTH, 4, 1);
+	b.setBeans(SOUTH, 3, 1);
+	b.setBeans(NORTH, 4, 1);
+	b.setBeans(SOUTH, POT, 10);
+	b.setBeans(NORTH, POT, 10);
+	int n = sp.chooseMove(b, SOUTH);
+	cout << n << endl;
+	assert(n == 4);
+}
+
 
 void doGameTests()
 {
-	//BadPlayer bp1("Bart");
-	//BadPlayer bp2("Homer");
-	//Board b(3, 0);
-	//b.setBeans(SOUTH, 1, 2);
-	//b.setBeans(NORTH, 2, 1);
-	//b.setBeans(NORTH, 3, 2);
-	//Game g(b, &bp1, &bp2);
-	//bool over;
-	//bool hasWinner;
-	//Side winner;
-	//g.display();
-	//g.status(over, hasWinner, winner);
-	//assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 0 &&
-	//	g.beans(NORTH, 1) == 0 && g.beans(NORTH, 2) == 1 && g.beans(NORTH, 3) == 2 &&
-	//	g.beans(SOUTH, 1) == 2 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 0);
+	BadPlayer bp1("Bart");
+	BadPlayer bp2("Homer");
+	Board b(3, 0);
+	b.setBeans(SOUTH, 1, 2);
+	b.setBeans(NORTH, 2, 1);
+	b.setBeans(NORTH, 3, 2);
+	Game g(b, &bp1, &bp2);
+	bool over;
+	bool hasWinner;
+	Side winner;
+	g.display();
+	g.status(over, hasWinner, winner);
+	assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 0 &&
+		g.beans(NORTH, 1) == 0 && g.beans(NORTH, 2) == 1 && g.beans(NORTH, 3) == 2 &&
+		g.beans(SOUTH, 1) == 2 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 0);
 
-	//g.move();
-	//g.display();
-	////   0  1  0
-	//// 0         3
-	////   0  1  0
-	//g.status(over, hasWinner, winner);
-	//assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 3 &&
-	//	g.beans(NORTH, 1) == 0 && g.beans(NORTH, 2) == 1 && g.beans(NORTH, 3) == 0 &&
-	//	g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 1 && g.beans(SOUTH, 3) == 0);
-	//g.move();
-	//g.display();
-	////   1  0  0
-	//// 0         3
-	////   0  1  0
-	//g.status(over, hasWinner, winner);
-	//assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 3 &&
-	//	g.beans(NORTH, 1) == 1 && g.beans(NORTH, 2) == 0 && g.beans(NORTH, 3) == 0 &&
-	//	g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 1 && g.beans(SOUTH, 3) == 0);
+	g.move();
+	g.display();
+	//   0  1  0
+	// 0         3
+	//   0  1  0
+	g.status(over, hasWinner, winner);
+	assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 3 &&
+		g.beans(NORTH, 1) == 0 && g.beans(NORTH, 2) == 1 && g.beans(NORTH, 3) == 0 &&
+		g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 1 && g.beans(SOUTH, 3) == 0);
+	g.move();
+	g.display();
+	//   1  0  0
+	// 0         3
+	//   0  1  0
+	g.status(over, hasWinner, winner);
+	assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 3 &&
+		g.beans(NORTH, 1) == 1 && g.beans(NORTH, 2) == 0 && g.beans(NORTH, 3) == 0 &&
+		g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 1 && g.beans(SOUTH, 3) == 0);
 
-	//g.move();
-	//g.display();
-	////   1  0  0
-	//// 0         3
-	////   0  0  1
-	//g.status(over, hasWinner, winner);
-	//assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 3 &&
-	//	g.beans(NORTH, 1) == 1 && g.beans(NORTH, 2) == 0 && g.beans(NORTH, 3) == 0 &&
-	//	g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 1);
+	g.move();
+	g.display();
+	//   1  0  0
+	// 0         3
+	//   0  0  1
+	g.status(over, hasWinner, winner);
+	assert(!over && g.beans(NORTH, POT) == 0 && g.beans(SOUTH, POT) == 3 &&
+		g.beans(NORTH, 1) == 1 && g.beans(NORTH, 2) == 0 && g.beans(NORTH, 3) == 0 &&
+		g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 1);
 
-	//g.move();
-	//g.display();
-	////   0  0  0
-	//// 1         4
-	////   0  0  0
-	//g.status(over, hasWinner, winner);
-	//assert(over && g.beans(NORTH, POT) == 1 && g.beans(SOUTH, POT) == 4 &&
-	//	g.beans(NORTH, 1) == 0 && g.beans(NORTH, 2) == 0 && g.beans(NORTH, 3) == 0 &&
-	//	g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 0);
-	//assert(hasWinner && winner == SOUTH);
+	g.move();
+	g.display();
+	//   0  0  0
+	// 1         4
+	//   0  0  0
+	g.status(over, hasWinner, winner);
+	assert(over && g.beans(NORTH, POT) == 1 && g.beans(SOUTH, POT) == 4 &&
+		g.beans(NORTH, 1) == 0 && g.beans(NORTH, 2) == 0 && g.beans(NORTH, 3) == 0 &&
+		g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 0);
+	assert(hasWinner && winner == SOUTH);
 
 
 	// testing tie
+	/*
 	BadPlayer bp1("Bart");
 	BadPlayer bp2("Homer");
 	Board b(4, 0);
@@ -131,7 +149,8 @@ void doGameTests()
 	b.setBeans(SOUTH, POT, 15);
 	Game g(b, &bp1, &bp2);
 	g.play();
-;
+	*/
+
 }
 
 int main()
@@ -140,13 +159,14 @@ int main()
 	//doBoardTests();
 	//doPlayerTests();
 	//doGameTests();
+	//doSmartTests();
 	//cout << "Passed all tests" << endl;
 	
 		
-	BadPlayer bp1("Marge");
-	SmartPlayer bp2("Homer");
+	BadPlayer bp1("Dumb");
+	SmartPlayer bp2("Smart");
 	//HumanPlayer bp2("Homer");
-	Board b(4, 4);
+	Board b(6, 4);
 	Game g(b, &bp1, &bp2);
 	g.play();
 		
