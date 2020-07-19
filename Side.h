@@ -5,7 +5,7 @@ enum Side { NORTH, SOUTH };
 
 const int NSIDES = 2;
 const int POT = 0;
-const int MAX_DEPTH = 3;
+const int MAX_DEPTH = 10;
 
 inline
 Side opponent(Side s)

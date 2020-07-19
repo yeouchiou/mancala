@@ -92,7 +92,7 @@ public:
 	SmartPlayer(std::string name);
 	virtual int chooseMove(const Board& b, Side s) const;
 private:
-	void minimax(Board& b, Side s, int& bestHole, int& value, AlarmClock& ac) const;
+	void minimax(Board& b, Side s, int& bestHole, int& value, const AlarmClock& ac, int depth) const;
 
 
 };
